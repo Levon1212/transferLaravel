@@ -15,7 +15,7 @@ class CreateTransfersTable extends Migration
     {
         Schema::create('transfers', function (Blueprint $table) {
             $table->id();
-            $table->string('date')->nullable();
+            $table->bigInteger('date')->nullable();
             $table->string('service')->nullable();
             $table->string('description')->nullable();
             $table->string('guest_name')->nullable();
@@ -31,6 +31,7 @@ class CreateTransfersTable extends Migration
             $table->string('guest_email')->nullable();
             $table->string('contact_number')->nullable();
             $table->string('notes')->nullable();
+            $table->string('admin_note')->nullable();
             $table->timestamps();
         });
     }
