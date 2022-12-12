@@ -39,12 +39,44 @@ class TransfersController extends Controller
         }
     }
     public function filterAppointment (Request $request){
-        if($request->input('com_id') === 'admin'){
-            $transfers = Transfers::where('status' , $request->input('status'))->orderBy('id','DESC')->get();
+        $data = [];
+        if($request->input('filterId')){
+            $data['id'] = $request->input('filterId');
+        }
+        if($request->input('filterGuest')){
+            $data['guest_name'] = $request->input('filterGuest');
+        }
+        if($request->input('filterFlight')){
+            $data['flight_number'] = $request->input('filterFlight');
+        }
+        if($request->input('status') === 'all'){
+            if($request->input('com_id') === 'admin'){
+                $transfers = Transfers::where($data)
+                ->whereBetween('date',[intval($request->input('start_date')),intval($request->input('end_date'))])
+                    ->orderBy('id','DESC')->get();
+                return response()->json($transfers);
+            }
+            $data['company_id'] = $request->input('com_id');
+            $transfers = Transfers::where($data)
+                ->whereBetween('date',[intval($request->input('start_date')),intval($request->input('end_date'))])
+                ->orderBy('id','DESC')->get();
+            return response()->json($transfers);
+        }else{
+            if($request->input('com_id') === 'admin'){
+                $data['status'] = $request->input('status');
+                $transfers = Transfers::where($data)
+                    ->whereBetween('date',[intval($request->input('start_date')),intval($request->input('end_date'))])
+                    ->orderBy('id','DESC')->get();
+
+                return response()->json($transfers);
+            }
+            $data['status'] = $request->input('status');
+            $data['company_id'] = $request->input('com_id');
+            $transfers = Transfers::where($data)
+                ->whereBetween('date',[intval($request->input('start_date')),intval($request->input('end_date'))])
+                ->orderBy('id','DESC')->get();
             return response()->json($transfers);
         }
-        $transfers = Transfers::where(['status' => $request->input('status'),'company_id' => $request->input('com_id')])->orderBy('id','DESC')->get();
-        return response()->json($transfers);
     }
     public function changeStatus  (Request $request) {
         if($request->input('status') === 'completed'){
@@ -73,3 +105,4 @@ class TransfersController extends Controller
         return response()->json($transfers);
     }
 }
+
