@@ -40,4 +40,13 @@ class CompaniesController extends Controller
         $company = Company::where('id',$request->input('user_id'))->first();
         return response()->json($company);
     }
+    public function updatePrices (Request $request){
+        $company = Company::where('id',$request->input('id'))->first();
+        $company->type1price = intval($request->input('type1price'));
+        $company->type2price = intval($request->input('type2price'));
+        $company->type3price = intval($request->input('type3price'));
+        if($company->save()){
+            return response()->json('updated');
+        }
+    }
 }

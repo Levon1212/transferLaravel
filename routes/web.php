@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('/create-company','CompaniesController@createCompany');
 Route::get('/get-companies','CompaniesController@getCompanies');
 Route::post('/update-companies-price','CompaniesController@updatePrice');
+Route::post('/update-prices','CompaniesController@updatePrices');
 // Appointments
 Route::post('/add-appointment','TransfersController@saveTransfer');
 Route::get('/get-appointment','TransfersController@getTransfer');
